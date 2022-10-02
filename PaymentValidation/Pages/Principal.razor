@@ -1,28 +1,45 @@
 ﻿@page "/"
 @using System.Timers
-<h3>Principal</h3>
-<div class="alert @TipoAlerta fade-in @OcultarAlerta" role="alert"> 
-    @ContenidoAlerta
-</div> 
 
 
-<div class="input-group mb-3">
+    <div class="row mx-auto"  style="max-width: 45rem;">
+        <div class="col-sm-12">
+            <div class="card border">
+                <div class="card-header" >
+                    <h3 class="text-center">Validador de Tarjetas de Credito - Cbu - Cuil</h3>
+                </div>
+            </div>
+        </div>
+        <div class="alert @TipoAlerta mb-3 @OcultarAlerta mx-auto" role="alert" style="max-width: 25rem;" > 
+            @ContenidoAlerta
+        </div> 
+    </div>
 
-  <img SRC=@imageSource width="48" height="48" />
-  <input type="text" class="form-control" placeholder="Ingrese Numero" @bind=@NumAvalidar 
-  aria-label="Nombre de usuario" aria-describedby="basic-addon1">
-  <button type="button" class="btn btn-primary" @onclick="@Validar">Validar</button>
+    <br/>
 
-</div>
+    <div  class="card text-dark bg-info mb-3 mx-auto" style="max-width: 25rem;">
+        <div class="card-header">Datos</div>
+        <div class="card-body">
+            <div class="input-group mb-3">
+             <img id="icon" SRC=@RutaImagen width="48" height="48" text-center/>
+                    <input type="number" class="form-control" placeholder="Ingrese Numero" @bind=@NumAvalidar  text-center
+                    aria-label="Numero" aria-describedby="basic-addon1">
+                   <button type="button" class="btn btn-primary" @onclick="@Validar" text-center>Validar</button>           
+
+            </div>
+        </div>
+    </div>
+
+
 
 @code {
     private string NumAvalidar = string.Empty;
     private string OcultarAlerta {get; set;} = "d-none";
     private string TipoAlerta {get; set;} = "alert-danger";
-    private string ContenidoAlerta { get; set; } = "This is a primary alert—check it out!";
-    private string? imageSource = "Recursos/defecto.ico";
+    private string ContenidoAlerta { get; set; } = "";
+    private string? RutaImagen = "Recursos/defecto.ico";
     private static System.Timers.Timer aTimer;
-    private int counter = 5;
+    private int counter = 10;
 
     public void StartTimer()
     {
@@ -118,7 +135,6 @@
             int Resto = 10 - int.Parse(UltimoDigitoSuma);
             int Pos = int.Parse(Numero.Substring(7, 1));
 
-            //MessageBox.Show(tarjeta.Substring(15, 1));
             if (Pos == Resto| Pos == 0 & Resto == 10)
             {
                 suma = 0;
@@ -149,7 +165,6 @@
         }
         catch (Exception e)
         {
-            //MessageBox.Show(e.Message);
             return false;
         }
 
@@ -176,61 +191,7 @@
     {
         OcultarAlerta = "d-none";
         StartTimer();
-
-        if (NumAvalidar.Length >= 13 & NumAvalidar.Length < 22)
-        {
-            if (VerificarTarjeta(NumAvalidar))
-            {
-                //TxtNumTarjeta.BackColor = Color.Green;
-                ContenidoAlerta = "Numero Validado";
-                TipoAlerta = "alert-success";
-                OcultarAlerta = "";
-                CambioIcono();
-            }
-            else
-            {
-                //TxtNumTarjeta.BackColor = Color.Red;
-                ContenidoAlerta = "Numero Invalido";
-                TipoAlerta = "alert-danger";
-                OcultarAlerta = "";
-                CambioIcono();
-            }
-
-        }
-        else
-        {
-            if (NumAvalidar.Length== 22)//valida cbu
-            {
-                if (VerificarCbu(NumAvalidar))
-                {
-                    //NumAvalidar.BackColor = Color.Green;
-                    //pictureBox1.Image = Image.FromFile(Application.StartupPath + @"\Resources\cbu.ico");
-                    ContenidoAlerta = "Numero Validado";
-                    TipoAlerta = "alert-success";
-                    OcultarAlerta = "";
-                    CambioIcono();
-                }
-                else
-                {
-                    //NumAvalidar.BackColor = Color.Red;
-                    ContenidoAlerta = "Numero Invalido";
-                    TipoAlerta = "alert-danger";
-                    OcultarAlerta = "";
-                    CambioIcono();
-                }
-
-            }
-            else
-            {
-                //NumAvalidar.BackColor = Color.Red;
-                ContenidoAlerta = "Numero Invalido";
-                TipoAlerta = "alert-danger";
-                OcultarAlerta = "";
-                CambioIcono();
-            }
-
-        }
-        if (NumAvalidar.Length  == 11)//CUIT
+        if (NumAvalidar.Length  == 11)//CUIL
         {
             if (ValidarCUIT(NumAvalidar))
             {
@@ -238,55 +199,105 @@
                 TipoAlerta = "alert-success";
                 OcultarAlerta = "";
                 CambioIcono();
-                //NumAvalidar.BackColor = Color.Green;
-                //pictureBox1.Image = Image.FromFile(Application.StartupPath + @"\Resources\CUIT.ico");
             }
             else
             {
-                //NumAvalidar.BackColor = Color.Red;
                 ContenidoAlerta = "Numero Invalido";
                 TipoAlerta = "alert-danger";
                 OcultarAlerta = "";
                 CambioIcono();
             }
         }
+        else if (NumAvalidar.Length >= 13 & NumAvalidar.Length < 22)
+        {
+            if (VerificarTarjeta(NumAvalidar))
+            {
+                ContenidoAlerta = "Numero Validado";
+                TipoAlerta = "alert-success";
+                OcultarAlerta = "";
+                CambioIcono();
+            }
+            else
+            {
+                ContenidoAlerta = "Numero Invalido";
+                TipoAlerta = "alert-danger";
+                OcultarAlerta = "";
+                CambioIcono();
+            }
+
+        }
+        else if (NumAvalidar.Length== 22)//valida cbu
+        {
+
+            if (VerificarCbu(NumAvalidar))
+            {
+                ContenidoAlerta = "Numero Validado";
+                TipoAlerta = "alert-success";
+                OcultarAlerta = "";
+                CambioIcono();
+            }
+            else
+            {
+                ContenidoAlerta = "Numero Invalido";
+                TipoAlerta = "alert-danger";
+                OcultarAlerta = "";
+                CambioIcono();
+            }
+        }
+        else
+        {
+                ContenidoAlerta = "Numero Invalido";
+                TipoAlerta = "alert-danger";
+                OcultarAlerta = "";
+                CambioIcono();
+            
+        }
+
     }
     private void CambioIcono()
     {
-         if (NumAvalidar.Length >= 4 & NumAvalidar.Length <= 16)//identifico la tarjeta
+         if (NumAvalidar.Length >= 4 & NumAvalidar.Length <= 16)//identifico la tarjeta/cuil
             {
                 if (NumAvalidar.ToString().Substring(0, 4) == "5888")//tarjeta tuya
                 {
-                    imageSource = "Recursos/tuya.ico";
+                    RutaImagen = "Recursos/tuya.ico";
                 }
                 else if (NumAvalidar.ToString().Substring(0,2) == "51"| NumAvalidar.ToString().Substring(0, 2) == "52"| NumAvalidar.ToString().Substring(0, 2) == "53"| NumAvalidar.ToString().Substring(0, 2) == "54"| NumAvalidar.ToString().Substring(0, 2) == "55")//mastercad
                 {
-                    imageSource = "Recursos/mastercard.ico";
+                    RutaImagen = "Recursos/mastercard.ico";
                 }
                 else if (NumAvalidar.ToString().Substring(0, 2) == "34" | NumAvalidar.ToString().Substring(0, 2) == "37")//amex
                 {
-                    imageSource = "Recursos/amex.ico";
+                    RutaImagen = "Recursos/amex.ico";
                 }
                 else if (NumAvalidar.ToString().Substring(0,1) == "4" )//visa
                 {
-                    imageSource = "Recursos/visa.ico";
+                    RutaImagen = "Recursos/visa.ico";
                 }
                 else if (NumAvalidar.ToString().Substring(0, 4) == "5895")//naranja
                 {
-                   imageSource = "Recursos/naranja.ico";
+                   RutaImagen = "Recursos/naranja.ico";
                 }
                 else if (NumAvalidar.ToString().Substring(0, 4) == "5896" | NumAvalidar.ToString().Substring(0, 4) == "6042")//cabal
                 {
-                    imageSource = "Recursos/cabal.ico";
+                    RutaImagen = "Recursos/cabal.ico";
+                }
+                else if (NumAvalidar.Length == 11 )//es cuit
+                {
+                    RutaImagen = "Recursos/cuil.ico";
                 }
                 else
                 {
-                    imageSource = "Recursos/defecto.ico";
+                    RutaImagen = "Recursos/defecto.ico";
                 }
+            }
+            else if (NumAvalidar.Length == 22 )//cbu
+            {
+                RutaImagen = "Recursos/cbu.ico";
             }
             else if  (NumAvalidar.Length <= 3)
             {
-                imageSource = "Recursos/defecto.ico";
+                RutaImagen = "Recursos/defecto.ico";
             }
     }
 
