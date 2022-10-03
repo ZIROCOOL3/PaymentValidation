@@ -1,6 +1,4 @@
 ﻿@page "/"
-@using System.Timers
-
 
     <div class="row mx-auto"  style="max-width: 45rem;">
         <div class="col-sm-12">
@@ -10,7 +8,7 @@
                 </div>
             </div>
         </div>
-        <div class="alert @TipoAlerta mb-3 @OcultarAlerta mx-auto" role="alert" style="max-width: 25rem;" > 
+        <div class="alert @TipoAlerta mb-3 @OcultarAlerta mx-auto" role="alert" style="max-width: 25rem; margin-top:30px" > 
             @ContenidoAlerta
         </div> 
     </div>
@@ -174,7 +172,7 @@
         {
             if (ValidarCUIT(NumAvalidar))
             {
-                ContenidoAlerta = "Numero Validado";
+                ContenidoAlerta = "Numero Valido";
                 TipoAlerta = "alert-success";
                 OcultarAlerta = "";
                 CambioIcono();
@@ -191,7 +189,7 @@
         {
             if (VerificarTarjeta(NumAvalidar))
             {
-                ContenidoAlerta = "Numero Validado";
+                ContenidoAlerta = "Numero Valido";
                 TipoAlerta = "alert-success";
                 OcultarAlerta = "";
                 CambioIcono();
@@ -210,7 +208,7 @@
 
             if (VerificarCbu(NumAvalidar))
             {
-                ContenidoAlerta = "Numero Validado";
+                ContenidoAlerta = "Numero Valido";
                 TipoAlerta = "alert-success";
                 OcultarAlerta = "";
                 CambioIcono();
