@@ -21,10 +21,10 @@
         <div class="card-header">Datos</div>
         <div class="card-body">
             <div class="input-group mb-3">
-             <img id="icon" SRC=@RutaImagen width="48" height="48" text-center/>
+             <img id="icon" SRC=@RutaImagen width="48" height="48" text-center style="margin-right: 6px;"/>
                     <input type="number" class="form-control" placeholder="Ingrese Numero" @bind=@NumAvalidar  text-center
                     aria-label="Numero" aria-describedby="basic-addon1">
-                   <button type="button" class="btn btn-primary" @onclick="@Validar" text-center>Validar</button>           
+                   <button type="button" class="btn btn-primary" style="margin-left: 6px;" @onclick="@Validar" text-center >Validar</button>           
 
             </div>
         </div>
@@ -38,29 +38,9 @@
     private string TipoAlerta {get; set;} = "alert-danger";
     private string ContenidoAlerta { get; set; } = "";
     private string? RutaImagen = "Recursos/defecto.ico";
-    private static System.Timers.Timer aTimer;
-    private int counter = 10;
+   
 
-    public void StartTimer()
-    {
-        aTimer = new System.Timers.Timer(1000);
-        aTimer.Elapsed += CountDownTimer;
-        aTimer.Enabled = true;
-    }
-
-    public void CountDownTimer(Object source, ElapsedEventArgs e)
-    {
-        if (counter > 0)
-        {
-            counter -= 1;
-        }
-        else
-        {
-            OcultarAlerta = "d-none";
-            aTimer.Enabled = false;
-        }
-        InvokeAsync(StateHasChanged);
-    }
+    
     private bool VerificarTarjeta(string tarjeta)
     {
         int suma = 0;
@@ -190,7 +170,6 @@
     private void Validar()
     {
         OcultarAlerta = "d-none";
-        StartTimer();
         if (NumAvalidar.Length  == 11)//CUIL
         {
             if (ValidarCUIT(NumAvalidar))
